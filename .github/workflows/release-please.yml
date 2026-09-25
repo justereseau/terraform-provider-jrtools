@@ -31,7 +31,10 @@ jobs:
         run: |
           version=$(jq -r '."."' .release-please-manifest.json)
           echo "version=$version" >> "$GITHUB_OUTPUT"
-          if git ls-remote --exit-code --tags origin "refs/tags/v$version" >/dev/null 2>&1; then
+          if [ "$version" = "0.0.0" ]; then
+            echo "due=false" >> "$GITHUB_OUTPUT"
+            echo "Nothing released yet."
+          elif git ls-remote --exit-code --tags origin "refs/tags/v$version" >/dev/null 2>&1; then
             echo "due=false" >> "$GITHUB_OUTPUT"
             echo "v$version already tagged, nothing to release."
           else
@@ -62,12 +65,14 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          pr=$(gh api "repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/pulls" --jq '.[0].number')
+          pr=$(gh api "repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/pulls" \
+            --jq '[.[] | select(any(.labels[]; .name == "autorelease: pending"))][0].number')
           if [ -n "$pr" ] && [ "$pr" != "null" ]; then
+            gh label create "autorelease: tagged" -R "$GITHUB_REPOSITORY" --color ededed --force
             gh pr edit "$pr" -R "$GITHUB_REPOSITORY" \
               --remove-label "autorelease: pending" \
               --add-label "autorelease: tagged"
             echo "Labeled PR #$pr as autorelease: tagged"
           else
-            echo "No PR found for $GITHUB_SHA, skipping."
+            echo "No pending release PR for $GITHUB_SHA, skipping."
           fi
