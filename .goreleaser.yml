@@ -38,8 +38,9 @@ signs:
       - "--detach-sign"
       - "${artifact}"
 release:
+  target_commitish: "{{ .FullCommit }}"
   extra_files:
     - glob: terraform-registry-manifest.json
       name_template: "{{ .ProjectName }}_{{ .Version }}_manifest.json"
 changelog:
-  disable: true
+  use: github-native
