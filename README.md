@@ -41,5 +41,5 @@ provider_installation {
 
 ## Release
 
-Push a `v*` tag. Requires `GPG_PRIVATE_KEY` and `PASSPHRASE` repo secrets, and the public key
+Push a `v*` tag. Requires `GPG_PRIVATE_KEY` and `GPG_PASSPHRASE` repo secrets, and the public key
 registered on registry.terraform.io.
