@@ -3,7 +3,8 @@
   "release-type": "simple",
   "skip-github-release": true,
   "include-component-in-tag": false,
-  "bootstrap-sha": "a67a999be61a815243ee506880a30342920366c3",
+  "bump-minor-pre-major": true,
+  "bootstrap-sha": "910a4af478e203e69671dba832868475f41bdc2b",
   "packages": {
     ".": {}
   }

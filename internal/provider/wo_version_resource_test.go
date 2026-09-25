@@ -38,13 +38,13 @@ variable "secret" {
   ephemeral = true
 }
 
-resource "tools_wo_version" "test" {
+resource "jrtools_wo_version" "test" {
   value_wo = var.secret
 }
 `
 
 func TestAccWoVersion(t *testing.T) {
-	res := "tools_wo_version.test"
+	res := "jrtools_wo_version.test"
 	sameVersion := statecheck.CompareValue(compareSame)
 	changedVersion := statecheck.CompareValue(compareDiffer)
 
