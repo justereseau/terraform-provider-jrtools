@@ -1,0 +1,17 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: ["config:recommended", "helpers:pinGitHubActionDigests"],
+  minimumReleaseAge: "1 days",
+  postUpdateOptions: ["gomodTidy", "gomodUpdateImportPaths"],
+  packageRules: [
+    {
+      matchManagers: ["gomod"],
+      matchPackageNames: ["github.com/hashicorp/**"],
+      groupName: "Terraform plugin SDK",
+    },
+    {
+      matchManagers: ["github-actions"],
+      groupName: "GitHub Actions",
+    },
+  ],
+}
