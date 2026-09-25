@@ -41,5 +41,12 @@ provider_installation {
 
 ## Release
 
-Push a `v*` tag. Requires `GPG_PRIVATE_KEY` and `GPG_PASSPHRASE` repo secrets, and the public key
-registered on registry.terraform.io.
+Releases are automated with [release-please](https://github.com/googleapis/release-please) from
+[Conventional Commits](https://www.conventionalcommits.org/) (`fix:` → patch, `feat:` → minor, `feat!:` → major).
+
+1. Merge PRs into `main` with Conventional Commit titles; release-please keeps a release PR up to date.
+2. Merge the release PR **by hand**. The pipeline then runs tests, builds and signs with goreleaser, and
+   creates the `vX.Y.Z` tag + GitHub Release, which the Terraform Registry picks up.
+
+Pushing a `v*` tag manually also triggers a release. Requires the `GPG_PRIVATE_KEY` and `GPG_PASSPHRASE`
+repo secrets and the public key registered on registry.terraform.io.

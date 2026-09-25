@@ -1,0 +1,73 @@
+# release-please keeps a rolling release PR (version bump + CHANGELOG) from Conventional Commits.
+# Merge it by hand: a bot-authored push to main wouldn't trigger this workflow.
+# A release is due when the manifest version has no tag yet; goreleaser then publishes and tags it.
+name: Release Please
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  prepare:
+    name: Prepare
+    runs-on: ubuntu-latest
+    outputs:
+      due: ${{ steps.due.outputs.due }}
+      version: ${{ steps.due.outputs.version }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Update release PR
+        uses: googleapis/release-please-action@v5
+
+      - name: Detect pending release
+        id: due
+        run: |
+          version=$(jq -r '."."' .release-please-manifest.json)
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          if git ls-remote --exit-code --tags origin "refs/tags/v$version" >/dev/null 2>&1; then
+            echo "due=false" >> "$GITHUB_OUTPUT"
+            echo "v$version already tagged, nothing to release."
+          else
+            echo "due=true" >> "$GITHUB_OUTPUT"
+            echo "v$version has no tag, a release is due."
+          fi
+
+  release:
+    name: Release
+    needs: prepare
+    if: ${{ needs.prepare.outputs.due == 'true' }}
+    permissions:
+      contents: write
+    secrets: inherit
+    uses: ./.github/workflows/release.yml
+    with:
+      version: ${{ needs.prepare.outputs.version }}
+
+  # release-please tracks completion via the "autorelease: tagged" label; flip it ourselves
+  # since we create the release, or the next run aborts on "untagged release PRs".
+  label:
+    name: Mark release PR as tagged
+    needs: [prepare, release]
+    if: ${{ needs.prepare.outputs.due == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Flip autorelease label
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          pr=$(gh api "repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/pulls" --jq '.[0].number')
+          if [ -n "$pr" ] && [ "$pr" != "null" ]; then
+            gh pr edit "$pr" -R "$GITHUB_REPOSITORY" \
+              --remove-label "autorelease: pending" \
+              --add-label "autorelease: tagged"
+            echo "Labeled PR #$pr as autorelease: tagged"
+          else
+            echo "No PR found for $GITHUB_SHA, skipping."
+          fi

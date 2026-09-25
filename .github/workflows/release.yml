@@ -1,25 +1,51 @@
+# Builds, signs and publishes the provider with goreleaser. The GitHub Release (and its tag)
+# is only created once every artifact is built and signed.
 name: Release
+
 on:
   push:
     tags: ["v*"]
+  workflow_call:
+    inputs:
+      version:
+        description: "Version to release, e.g. 1.2.3 (set by release-please.yml)"
+        type: string
+        required: true
+
 permissions:
   contents: write
+
 jobs:
   goreleaser:
+    name: Goreleaser
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - name: Checkout
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
-      - uses: actions/setup-go@v6
+
+      - name: Tag locally
+        if: ${{ inputs.version != '' }}
+        run: git tag "v${{ inputs.version }}"
+
+      - name: Set up Go
+        uses: actions/setup-go@v6
         with:
           go-version-file: go.mod
-      - id: import_gpg
+
+      - name: Run tests
+        run: go test ./... -count=1
+
+      - name: Import GPG key
+        id: import_gpg
         uses: crazy-max/ghaction-import-gpg@v6
         with:
           gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
-      - uses: goreleaser/goreleaser-action@v6
+
+      - name: Build, sign and publish
+        uses: goreleaser/goreleaser-action@v6
         with:
           args: release --clean
         env:
