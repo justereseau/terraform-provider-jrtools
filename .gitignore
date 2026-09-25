@@ -1,5 +1,5 @@
 dist/
-terraform-provider-tools
+terraform-provider-jrtools
 *.tfstate*
 .terraform/
 .terraform.lock.hcl

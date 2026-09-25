@@ -21,6 +21,7 @@ jobs:
         with:
           scan-type: fs
           scanners: vuln,secret,misconfig
+          trivyignores: .trivyignore
           severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
           format: sarif
           output: trivy-results.sarif
@@ -34,6 +35,7 @@ jobs:
         with:
           scan-type: fs
           scanners: vuln,secret,misconfig
+          trivyignores: .trivyignore
           severity: HIGH,CRITICAL
           exit-code: "1"
           skip-setup-trivy: true

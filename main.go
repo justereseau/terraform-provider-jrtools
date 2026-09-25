@@ -7,7 +7,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 
-	"github.com/justereseau/terraform-provider-tools/internal/provider"
+	"github.com/justereseau/terraform-provider-jrtools/internal/provider"
 )
 
 var version = "dev"
@@ -18,7 +18,7 @@ func main() {
 	flag.Parse()
 
 	err := providerserver.Serve(context.Background(), provider.New(version), providerserver.ServeOpts{
-		Address: "registry.terraform.io/justereseau/tools",
+		Address: "registry.terraform.io/justereseau/jrtools",
 		Debug:   debug,
 	})
 	if err != nil {

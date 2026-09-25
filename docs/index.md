@@ -1,10 +1,10 @@
 ---
-page_title: "tools Provider"
+page_title: "jrtools Provider"
 description: |-
   Utility resources for Terraform workflows.
 ---
 
-# tools Provider
+# jrtools Provider
 
 Utility resources for Terraform workflows. Requires Terraform 1.11+.
 
@@ -13,8 +13,8 @@ Utility resources for Terraform workflows. Requires Terraform 1.11+.
 ```terraform
 terraform {
   required_providers {
-    tools = {
-      source = "justereseau/tools"
+    jrtools = {
+      source = "justereseau/jrtools"
     }
   }
 }

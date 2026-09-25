@@ -1,7 +1,7 @@
 terraform {
   required_providers {
-    tools = {
-      source = "justereseau/tools"
+    jrtools = {
+      source = "justereseau/jrtools"
     }
   }
 }

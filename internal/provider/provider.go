@@ -9,38 +9,38 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 )
 
-var _ provider.Provider = (*toolsProvider)(nil)
+var _ provider.Provider = (*jrtoolsProvider)(nil)
 
-type toolsProvider struct {
+type jrtoolsProvider struct {
 	version string
 }
 
 func New(version string) func() provider.Provider {
 	return func() provider.Provider {
-		return &toolsProvider{version: version}
+		return &jrtoolsProvider{version: version}
 	}
 }
 
-func (p *toolsProvider) Metadata(_ context.Context, _ provider.MetadataRequest, resp *provider.MetadataResponse) {
-	resp.TypeName = "tools"
+func (p *jrtoolsProvider) Metadata(_ context.Context, _ provider.MetadataRequest, resp *provider.MetadataResponse) {
+	resp.TypeName = "jrtools"
 	resp.Version = p.version
 }
 
-func (p *toolsProvider) Schema(_ context.Context, _ provider.SchemaRequest, resp *provider.SchemaResponse) {
+func (p *jrtoolsProvider) Schema(_ context.Context, _ provider.SchemaRequest, resp *provider.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		Description: "Utility resources for Terraform workflows.",
 	}
 }
 
-func (p *toolsProvider) Configure(context.Context, provider.ConfigureRequest, *provider.ConfigureResponse) {
+func (p *jrtoolsProvider) Configure(context.Context, provider.ConfigureRequest, *provider.ConfigureResponse) {
 }
 
-func (p *toolsProvider) Resources(context.Context) []func() resource.Resource {
+func (p *jrtoolsProvider) Resources(context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
 		NewWoVersionResource,
 	}
 }
 
-func (p *toolsProvider) DataSources(context.Context) []func() datasource.DataSource {
+func (p *jrtoolsProvider) DataSources(context.Context) []func() datasource.DataSource {
 	return nil
 }

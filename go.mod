@@ -1,4 +1,4 @@
-module github.com/justereseau/terraform-provider-tools
+module github.com/justereseau/terraform-provider-jrtools
 
 go 1.26.0
 
