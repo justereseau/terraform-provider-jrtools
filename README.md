@@ -2,19 +2,31 @@
 
 Terraform provider with utility resources. Requires Terraform 1.11+.
 
-## `tools_wo_version`
+Resource names start with `jr_`, so declare the provider with the local name `jr`:
+
+```hcl
+terraform {
+  required_providers {
+    jr = {
+      source = "justereseau/tools"
+    }
+  }
+}
+```
+
+## `jr_tools_wo_version`
 
 Turns a write-only/ephemeral value into a non-sensitive `version` that changes only when the value
 changes — so `*_wo_version` arguments don't need to be bumped by hand.
 
 ```hcl
-resource "tools_wo_version" "db_password" {
+resource "jr_tools_wo_version" "db_password" {
   value_wo = ephemeral.random_password.db.result
 }
 
 resource "aws_db_instance" "example" {
   password_wo         = ephemeral.random_password.db.result
-  password_wo_version = tools_wo_version.db_password.version
+  password_wo_version = jr_tools_wo_version.db_password.version
 }
 ```
 

@@ -45,7 +45,7 @@ func NewWoVersionResource() resource.Resource {
 }
 
 func (r *woVersionResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_wo_version"
+	resp.TypeName = typeNamePrefix + req.ProviderTypeName + "_wo_version"
 }
 
 func (r *woVersionResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {

@@ -1,10 +1,10 @@
 ---
-page_title: "tools_wo_version Resource - tools"
+page_title: "jr_tools_wo_version Resource - justereseau/tools"
 description: |-
   Derives a stable, non-sensitive version from a write-only value, for use as a *_wo_version argument.
 ---
 
-# tools_wo_version (Resource)
+# jr_tools_wo_version (Resource)
 
 Derives a stable, non-sensitive version from a write-only value, for use as a `*_wo_version` argument.
 The version changes only when the value changes, so the write-only value is re-sent only when needed.
@@ -22,7 +22,7 @@ ephemeral "random_password" "db" {
   length = 32
 }
 
-resource "tools_wo_version" "db_password" {
+resource "jr_tools_wo_version" "db_password" {
   value_wo = ephemeral.random_password.db.result
 }
 
@@ -30,7 +30,7 @@ resource "aws_db_instance" "example" {
   # ...
   storage_encrypted   = true
   password_wo         = ephemeral.random_password.db.result
-  password_wo_version = tools_wo_version.db_password.version
+  password_wo_version = jr_tools_wo_version.db_password.version
 }
 ```
 

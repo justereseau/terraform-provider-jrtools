@@ -8,12 +8,14 @@ description: |-
 
 Utility resources for Terraform workflows. Requires Terraform 1.11+.
 
+Resource names start with `jr_`, so declare the provider with the local name `jr`.
+
 ## Example Usage
 
 ```terraform
 terraform {
   required_providers {
-    tools = {
+    jr = {
       source = "justereseau/tools"
     }
   }

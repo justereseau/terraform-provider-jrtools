@@ -9,6 +9,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 )
 
+// Resource type names are prefixed with "jr_", so Terraform resolves them to the provider local name "jr".
+const typeNamePrefix = "jr_"
+
 var _ provider.Provider = (*toolsProvider)(nil)
 
 type toolsProvider struct {
