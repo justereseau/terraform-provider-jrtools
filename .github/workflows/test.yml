@@ -17,4 +17,13 @@ jobs:
         with:
           terraform_wrapper: false
       - run: go vet ./...
-      - run: go test ./... -v -count=1
+      - run: go test ./internal/... -v -count=1 -coverprofile=coverage.out -covermode=atomic
+      - name: Enforce coverage threshold
+        env:
+          THRESHOLD: "75"
+        run: |
+          total=$(go tool cover -func=coverage.out | awk '/^total:/ {gsub("%", "", $3); print $3}')
+          echo "Total coverage: ${total}% (threshold: ${THRESHOLD}%)"
+          awk -v total="$total" -v threshold="$THRESHOLD" \
+            'BEGIN { exit (total + 0 < threshold) ? 1 : 0 }' \
+            || { echo "::error::Coverage ${total}% is below the ${THRESHOLD}% threshold"; exit 1; }
