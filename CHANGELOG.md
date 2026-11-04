@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/justereseau/terraform-provider-jrtools/compare/v0.1.0...v0.1.1) (2026-11-04)
+
+
+### Bug Fixes
+
+* bump golang.org/x/net to v0.60.0 to fix Trivy CI failure ([#12](https://github.com/justereseau/terraform-provider-jrtools/issues/12)) ([94671ed](https://github.com/justereseau/terraform-provider-jrtools/commit/94671ed25a32940437b51f0dd7b995d2c39738e8))
+
 ## 0.1.0 (2026-09-25)
 
 
