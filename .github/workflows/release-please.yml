@@ -8,6 +8,12 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# Serialize runs so a burst of pushes to main (e.g. several Renovate PRs merging back
+# to back) can't race each other while tagging/publishing the same pending release.
+concurrency:
+  group: release-please-${{ github.ref }}
+  cancel-in-progress: false
+
 permissions:
   contents: write
   pull-requests: write
