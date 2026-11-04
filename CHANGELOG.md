@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/justereseau/terraform-provider-jrtools/compare/v0.1.1...v0.1.2) (2026-11-04)
+
+
+### Bug Fixes
+
+* **deps:** update module golang.org/x/crypto to v0.58.0 ([#9](https://github.com/justereseau/terraform-provider-jrtools/issues/9)) ([593e362](https://github.com/justereseau/terraform-provider-jrtools/commit/593e362bd02bfeb0bf8b35db14b92b7ddec4cda5))
+
 ## [0.1.1](https://github.com/justereseau/terraform-provider-jrtools/compare/v0.1.0...v0.1.1) (2026-11-04)
 
 
