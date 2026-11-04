@@ -20,7 +20,7 @@ jobs:
       - run: go test ./internal/... -v -count=1 -coverprofile=coverage.out -covermode=atomic
       - name: Enforce coverage threshold
         env:
-          THRESHOLD: "75"
+          THRESHOLD: "95" # canary: temporarily above actual coverage to prove the gate fails
         run: |
           total=$(go tool cover -func=coverage.out | awk '/^total:/ {gsub("%", "", $3); print $3}')
           echo "Total coverage: ${total}% (threshold: ${THRESHOLD}%)"
